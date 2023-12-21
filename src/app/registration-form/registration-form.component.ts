@@ -33,6 +33,7 @@ export class RegistrationFormComponent {
     this.api.getUserData().subscribe(
       (response) => {
         this.api.saveUserData(response.results[0]);
+        console.log(this.api.getUserData());
       },
       (error) => {
         this.displayErrors = true;
@@ -41,10 +42,10 @@ export class RegistrationFormComponent {
     );
   }
   generatedCode = this.generateVerificationCode();
+  
   onSubmit() {
     if (this.registrationForm.valid) {
       const userData = this.api.getUserData();
-      console.log(userData);
       if (userData && this.matchUserData(userData)) {
 
         console.log(this.generatedCode);
@@ -52,18 +53,17 @@ export class RegistrationFormComponent {
           const enteredCode = this.registrationForm.get('verificationCode')?.value;
           if (enteredCode === this.generatedCode) {
             this.isThirdStep = true;
-            console.log('Третий этап регистрации:', userData);
             this.router.navigate(['/welcome']);
           } else {
             this.displayErrors = true;
             console.log('Неверный код подтверждения.');
             this.generatedCode = this.generateVerificationCode();
+            console.log(this.generatedCode);
           }
         } else {
           this.isSecondStep = true;
           this.userEmail = this.registrationForm.get('email')?.value;
           this.registrationForm.addControl('verificationCode', this.fb.control('', Validators.required));
-          console.log('Второй этап регистрации:', userData);
         }
       } else {
         this.displayErrors = true;
@@ -77,8 +77,6 @@ export class RegistrationFormComponent {
 
   matchUserData(data: any): boolean {
     const formData = this.registrationForm.value;
-    console.log(data.email);
-    console.log(formData.email);
     return data.email === formData.email && data.login.password === formData.password;
   }
 
