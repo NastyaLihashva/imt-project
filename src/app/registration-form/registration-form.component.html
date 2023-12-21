@@ -1,0 +1,38 @@
+<form [formGroup]="registrationForm" (submit)="onSubmit()" class="max-w-md mx-auto bg-white p-8 border rounded-md shadow-md mt-10">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+      <input type="text" formControlName="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <div *ngIf="displayErrors && registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched" class="text-red-500 text-xs mt-1">
+        Email обязателен
+      </div>
+      <div *ngIf="displayErrors && registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.dirty" class="text-red-500 text-xs mt-1">
+        Некорректный формат email
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+      <input type="password" formControlName="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <div *ngIf="displayErrors && registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched" class="text-red-500 text-xs mt-1">
+        Пароль обязателен
+      </div>
+      <div *ngIf="displayErrors && registrationForm.get('password')?.hasError('minlength') && registrationForm.get('password')?.dirty" class="text-red-500 text-xs mt-1">
+        Пароль должен быть не менее 6 символов
+      </div>
+      <div *ngIf="displayErrors && registrationForm.get('password')?.hasError('maxlength') && registrationForm.get('password')?.dirty" class="text-red-500 text-xs mt-1">
+        Пароль должен быть не более 20 символов
+      </div>
+      <div *ngIf="displayErrors && registrationForm.get('password')?.hasError('pattern') && registrationForm.get('password')?.dirty" class="text-red-500 text-xs mt-1">
+        Пароль может содержать только символы a-z, A-Z, 0-9
+      </div>
+    </div>
+  
+    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" (click)="onSubmit()">Войти</button>
+        <div *ngIf="displayErrors && registrationForm.invalid" class="text-red-500 text-xs mt-1">
+            Пожалуйста, заполните все обязательные поля.
+        </div>
+    <div *ngIf="isSecondStep" class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2">На почту {{userEmail}} был выслан код</label>
+        <input type="text" formControlName="verificationCode" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>    
+  </form>
+  
